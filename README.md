@@ -59,3 +59,15 @@ Taps on modes, chips, time pills, cards, swap, share, the slider and Compare giv
 
 ## Honest status
 Verified here: engine tests pass, JavaScript syntax checks pass, and a simulated-browser test confirmed the recommendation logic, time-of-day change, slider, error handling and vibration calls. NOT verified here: real visual appearance, live map tiles and live routing, and real-phone haptics. Test those on your own phone before presenting.
+
+## v3 design update
+- New design language: transit-signage meets editorial. Oversized Bricolage Grotesque headlines, Instrument Sans body (17px base), flat colour blocks, generous spacing.
+- **The whole site takes the colour of the selected mode** (header, hero, buttons, cards, "How it works", footer): walk = leaf green, cycle = forest green, metro = blue, bus = amber, 2-wheeler = orange, car = red. Works in light and dark theme and fades smoothly.
+- Progressive disclosure: planner and all options stay in one card; results show the verdict, map and mode cards first; trip details and the time-vs-emissions chart are collapsed until opened.
+- Tested in a real headless Chromium at 1440px and 390px (no horizontal overflow, no console errors), including dark mode.
+
+## v4 mobile fixes
+- Fixed horizontal overflow ("site sliding off-screen") on phones: the chart header, header buttons and the sticky mobile bar were wider than 320-360px screens. Verified in headless Chromium at 320, 360, 375, 390 and 430px, before and after running a journey: page width equals screen width at every size.
+- The assumptions table turns into stacked cards on phones instead of scrolling sideways.
+- One-finger swipes scroll the page (the map no longer traps scrolling); use two fingers to move the map.
+- Tighter header and padding on small screens; sticky "Share" bar fits at 320px.

@@ -8,7 +8,7 @@
   <title>GreenRoute NCR — Make every journey greener</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <link rel="stylesheet" href="style.css">
   <script>
@@ -46,26 +46,15 @@
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-dot"></span> Delhi NCR · greener journeys</div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span> Delhi NCR green mobility</div>
         <h1 id="hero-title">Choose your route.<br><span>Change your impact.</span></h1>
-        <p class="hero-lead">One trip. Six ways to get there.</p>
+        <p class="hero-lead">One trip, six ways to make it. See what each one costs the air, then choose.</p>
         <div class="hero-points" aria-label="GreenRoute benefits">
           <span><i aria-hidden="true">✓</i> Compare carbon</span>
           <span><i aria-hidden="true">✓</i> See the route</span>
           <span><i aria-hidden="true">✓</i> No sign-up</span>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="hero-art-orbit"></div>
-          <div class="art-tree art-tree-one"><span></span></div><div class="art-tree art-tree-two"><span></span></div>
-          <div class="art-road"></div>
-          <div class="art-bike"><svg viewBox="0 0 100 55"><circle cx="23" cy="38" r="12"/><circle cx="77" cy="38" r="12"/><path d="m23 38 17-23 18 23H23l13-17h21l20 17M38 15h-9m29 23 10-23h9"/><circle cx="41" cy="9" r="3"/></svg></div>
-          <div class="art-walk"><svg viewBox="0 0 70 65"><circle cx="38" cy="9" r="6"/><path d="m35 18-10 15 12 8 2 20m-2-20-15 18m13-33 15 10 7-10m-7 10-4 15"/></svg></div>
-          <div class="art-transit art-metro"><svg viewBox="0 0 70 56"><rect x="17" y="5" width="36" height="42" rx="8"/><path d="M23 14h24v15H23zM27 36h4m10 0h4M22 47l-5 6m36-6 5 6"/><circle cx="27" cy="35" r="2"/><circle cx="43" cy="35" r="2"/></svg></div>
-          <div class="art-transit art-bus"><svg viewBox="0 0 80 55"><rect x="9" y="8" width="62" height="36" rx="8"/><path d="M16 15h48v14H16zM22 36h4m28 0h4M18 44l-5 7m50-7 5 7"/><circle cx="22" cy="35" r="2"/><circle cx="58" cy="35" r="2"/></svg></div>
-          <div class="art-car"><span></span></div>
-          <div class="art-leaf art-leaf-one">✦</div><div class="art-leaf art-leaf-two">✦</div>
-          <div class="art-smog"></div>
-        </div>
+        <div class="examples"><span class="examples-label">Try an example journey</span><span id="chips" class="chips"></span></div>
       </div>
 
       <form id="planner" class="planner" novalidate>
@@ -101,32 +90,23 @@
         </div><select id="travelTime" name="travelTime" class="visually-hidden" aria-label="When are you travelling?"><option value="day">Day</option><option value="evening">Evening</option><option value="night">Night</option></select></div>
         <div class="spare-row"><label for="spare">Time I can spare vs the fastest <output id="spareOut" for="spare">+30 min</output></label><input id="spare" type="range" min="0" max="60" step="5" value="30"></div>
         <button class="go" type="submit" id="go">Compare routes <span aria-hidden="true">→</span></button>
-        <div class="examples"><span class="examples-label">OR TRY</span><span id="chips" class="chips"></span></div>
-        <p id="error" class="error" role="alert" hidden></p>
+<p id="error" class="error" role="alert" hidden></p>
       </form>
-      <div class="hero-orb orb-one" aria-hidden="true"></div><div class="hero-orb orb-two" aria-hidden="true"></div>
+      
     </section>
 
     <section class="results section-shell" id="results">
       <div class="section-heading results-heading">
         <div><span class="section-kicker">YOUR JOURNEY</span><h2>See the difference.</h2></div>
-        <p>Tap a mode to update the route.</p>
+        <p>Pick any card below to redraw the route. <a href="#planner">Change trip</a></p>
       </div>
-            <section id="quickCompare" class="carbon-compare panel" aria-labelledby="compare-title" hidden>
-        <div class="compare-head"><div><span class="panel-overline">THE CARBON GAP</span><h3 id="compare-title">Cycle vs. drive alone</h3></div><span id="compareSaving" class="compare-saving"></span></div>
-        <div class="compare-pair">
-          <article class="compare-option compare-bike"><div class="compare-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l6 6 3-3 7 7M15 17h5v-5"/></svg></div><div class="compare-details"><span class="compare-mode-label" id="greenLabel">CYCLING</span><strong id="bikeCo2">0 kg CO₂e</strong><small><span id="bikeTime">—</span> · <span id="bikeKm">—</span> km</small><div class="impact-track"><i id="bikeBar"></i></div><div class="compare-fact">No tailpipe emissions</div></div><svg class="nature-art" viewBox="0 0 90 72" aria-hidden="true"><path d="M6 66h78M24 65c-10-20 1-31 19-31 3 17-4 28-19 31Zm22-17c-2-21 10-33 31-34 1 21-11 32-31 34Zm2 17c2-11 11-18 24-17-4 12-12 18-24 17Z"/><path d="M24 65 43 43M46 48 61 18M48 65 69 49"/></svg></article>
-          <article class="compare-option compare-car"><div class="compare-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16v-4l2-5h10l2 5v4M3 16h18M7.5 12h9"/><circle cx="7.5" cy="17.5" r="1.3"/><circle cx="16.5" cy="17.5" r="1.3"/></svg></div><div class="compare-details"><span class="compare-mode-label">SOLO CAR</span><strong id="carCo2">— kg CO₂e</strong><small><span id="carTime">—</span> · <span id="carKm">—</span> km</small><div class="impact-track"><i id="carBar"></i></div><div class="compare-fact">One person · petrol-car estimate</div></div><svg class="pollution-art" viewBox="0 0 90 72" aria-hidden="true"><path d="M7 66h76M15 65V35h18v30M33 65V18h12v47M45 65V42h30v23"/><path d="M36 18V6h7v12"/><path d="M47 10c-5-6 5-7 0-13M59 18c-4-5 5-7 2-12"/><circle cx="57" cy="29" r="7"/><circle cx="69" cy="25" r="5"/><circle cx="76" cy="34" r="4"/></svg></article>
-        </div>
-        <p id="compareFoot" class="compare-foot">Cycling vs solo driving, based on illustrative operational emissions.</p>
-      </section>
-      <div id="status" class="status" role="status" hidden></div>
+            <div id="status" class="status" role="status" hidden></div>
       <div class="split">
         <div class="map-panel panel">
           <div class="panel-heading"><div><span class="panel-overline">ROUTE EXPLORER</span><h3>Across the city</h3></div><span class="map-live"><span></span> Interactive map</span></div>
           <div id="map" role="application" aria-label="Route map of Delhi NCR"></div>
           <div class="map-legend"><span><i class="legend-point start-point"></i> Start</span><span><i class="legend-point end-point"></i> Destination</span><span><i class="legend-line"></i> Selected route</span></div>
-          <p class="map-note">© OpenStreetMap contributors · Routes may use estimates.</p>
+          <p class="map-note">© OpenStreetMap contributors · Routes may use estimates.<span class="only-mobile"> Use two fingers to move the map.</span></p>
         </div>
         <div class="side-panel">
           <div id="empty" class="empty panel"><div class="empty-art" aria-hidden="true"><svg viewBox="0 0 120 90"><path d="M13 69c9-13 15-26 30-27 9 0 11 8 19 8 8 0 10-15 19-20 9-4 15 6 26 0"/><path d="M19 75h83"/><circle cx="38" cy="42" r="4"/><circle cx="83" cy="30" r="4"/><path d="M38 42 83 30" stroke-dasharray="3 5"/></svg></div><span class="empty-kicker">YOUR JOURNEY STARTS HERE</span><h3>Ready when you are.</h3><p>Enter two places, then compare time and emissions.</p><div class="empty-points"><span><i>✓</i> No sign-up</span><span><i>✓</i> Clear comparisons</span></div></div>
@@ -136,17 +116,25 @@
           </div>
         </div>
       </div>
-      <section id="journey-insights" class="journey-insights panel" aria-labelledby="insights-title" hidden>
-        <div class="insights-heading"><div><span class="panel-overline">TRAVEL COMFORT</span><h3 id="insights-title">A little more context for your trip</h3><p>Guidance only · not a safety rating.</p></div><span class="advisory-pill"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg> Advisory only</span></div>
+      <section id="quickCompare" class="carbon-compare panel" aria-labelledby="compare-title" hidden>
+        <div class="compare-head"><div><span class="panel-overline">THE CARBON GAP</span><h3 id="compare-title">Cycle vs. drive alone</h3></div><span id="compareSaving" class="compare-saving"></span></div>
+        <div class="compare-pair">
+          <article class="compare-option compare-bike"><div class="compare-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l6 6 3-3 7 7M15 17h5v-5"/></svg></div><div class="compare-details"><span class="compare-mode-label" id="greenLabel">CYCLING</span><strong id="bikeCo2">0 kg CO₂e</strong><small><span id="bikeTime">—</span> · <span id="bikeKm">—</span> km</small><div class="impact-track"><i id="bikeBar"></i></div><div class="compare-fact">No tailpipe emissions</div></div><svg class="nature-art" viewBox="0 0 90 72" aria-hidden="true"><path d="M6 66h78M24 65c-10-20 1-31 19-31 3 17-4 28-19 31Zm22-17c-2-21 10-33 31-34 1 21-11 32-31 34Zm2 17c2-11 11-18 24-17-4 12-12 18-24 17Z"/><path d="M24 65 43 43M46 48 61 18M48 65 69 49"/></svg></article>
+          <article class="compare-option compare-car"><div class="compare-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16v-4l2-5h10l2 5v4M3 16h18M7.5 12h9"/><circle cx="7.5" cy="17.5" r="1.3"/><circle cx="16.5" cy="17.5" r="1.3"/></svg></div><div class="compare-details"><span class="compare-mode-label">SOLO CAR</span><strong id="carCo2">— kg CO₂e</strong><small><span id="carTime">—</span> · <span id="carKm">—</span> km</small><div class="impact-track"><i id="carBar"></i></div><div class="compare-fact">One person · petrol-car estimate</div></div><svg class="pollution-art" viewBox="0 0 90 72" aria-hidden="true"><path d="M7 66h76M15 65V35h18v30M33 65V18h12v47M45 65V42h30v23"/><path d="M36 18V6h7v12"/><path d="M47 10c-5-6 5-7 0-13M59 18c-4-5 5-7 2-12"/><circle cx="57" cy="29" r="7"/><circle cx="69" cy="25" r="5"/><circle cx="76" cy="34" r="4"/></svg></article>
+        </div>
+        <p id="compareFoot" class="compare-foot">Cycling vs solo driving, based on illustrative operational emissions.</p>
+      </section>
+      <details id="journey-insights" class="journey-insights panel" hidden>
+        <summary class="insights-summary"><div class="insights-heading"><div><span class="panel-overline">TRAVEL COMFORT</span><h3 id="insights-title">Trip details and comfort</h3><p>Guidance only · not a safety rating.</p></div><span class="advisory-pill"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg> Advisory only</span></div></summary>
         <div id="comfortItems" class="comfort-grid"></div>
         <div class="trip-steps-wrap"><div class="trip-steps-heading"><strong>What this journey involves</strong><span id="transferNote">Transit details are illustrative</span></div><div id="tripSteps" class="trip-steps"></div></div>
         <div class="insights-footer"><p id="safetyContext" class="safety-context"></p><div class="share-actions"><button type="button" class="secondary-button" id="copyTrip"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg> Copy trip summary</button><button type="button" class="share-button" id="shareTrip"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg> Share journey</button></div></div>
         <p id="shareStatus" class="share-status" role="status" aria-live="polite" hidden></p>
-      </section>
+      </details>
       <div id="board" hidden>
         <div class="section-heading board-heading"><div><span class="section-kicker">MAKE THE COMPARISON</span><h2>Every option, side by side.</h2></div><p>Choose a card to show its route on the map. Figures are estimated, not live journey guarantees.</p></div>
         <div id="cards" class="cards"></div>
-        <div class="bars-panel panel"><div class="panel-heading"><div><span class="panel-overline">AT A GLANCE</span><h3>Time vs. emissions</h3></div><div class="chart-key"><span><i class="key-emissions"></i> CO₂e</span><span><i class="key-time"></i> Travel time</span></div></div><div id="bars" class="bars"></div></div>
+        <details class="bars-panel panel"><summary class="panel-heading"><div><span class="panel-overline">AT A GLANCE</span><h3>Time vs. emissions</h3></div><div class="chart-key"><span><i class="key-emissions"></i> CO₂e</span><span><i class="key-time"></i> Travel time</span></div></summary><div id="bars" class="bars"></div></details>
       </div>
     </section>
 

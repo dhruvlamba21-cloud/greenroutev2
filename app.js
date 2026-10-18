@@ -152,7 +152,7 @@
       $("#map").innerHTML = '<div class="map-fallback">The interactive map could not load. Route comparisons can still work when you use a sample journey.</div>';
       return;
     }
-    map = L.map("map", { scrollWheelZoom: false, zoomControl: true, fadeAnimation: false, markerZoomAnimation: false, zoomAnimation: true, preferCanvas: true, wheelDebounceTime: 80 }).setView([28.61, 77.21], 10);
+    map = L.map("map", { dragging: !L.Browser.mobile, tap: false, scrollWheelZoom: false, zoomControl: true, fadeAnimation: false, markerZoomAnimation: false, zoomAnimation: true, preferCanvas: true, wheelDebounceTime: 80 }).setView([28.61, 77.21], 10);
     setMapTiles(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
     layer = L.layerGroup().addTo(map);
   }
@@ -201,6 +201,7 @@
     });
     $("#copyTrip").addEventListener("click", copyTrip);
     initReveal();
+    const bp = document.querySelector(".bars-panel"); if (bp) bp.addEventListener("toggle", () => { if (bp.open) growBars($("#bars")); });
     $("#assump").innerHTML = ["metro", "bus", "two", "car", "bike", "walk"].map((m) => {
       const notes = { metro: "Electric; varies with load and grid", bus: "Mixed CNG/electric fleet, average occupancy", car: "Petrol, one occupant", two: "Petrol, one rider", bike: "No tailpipe emissions", walk: "No tailpipe emissions" };
       return "<tr><td>" + E.LABELS[m] + "</td><td>" + E.FACTORS[m] + "</td><td>" + E.SPEEDS[m] + "</td><td>" + notes[m] + "</td></tr>";
