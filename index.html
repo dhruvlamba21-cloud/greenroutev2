@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7fbf7">
+  <meta name="description" content="Compare Delhi NCR journeys by travel time and estimated carbon emissions. Find a greener way across the city with GreenRoute NCR.">
+  <title>GreenRoute NCR — Make every journey greener</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('greenroute-theme');
+        const preferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = saved || preferred;
+      } catch (_) { document.documentElement.dataset.theme = 'light'; }
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#planner">Skip to journey planner</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="GreenRoute NCR home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 38 38"><rect x="1" y="1" width="36" height="36" rx="12"/><path d="M27.8 9.4C17.4 9.6 10 15.1 10.2 23.2c.1 3.1 2.4 5.3 5.4 5.3 8.1.1 13.3-8.1 12.2-19.1Z"/><path d="M8.7 29.2c4.2-7.4 8.7-11.4 15.2-15.1"/></svg></span>
+      <span class="brand-name">greenroute<span>ncr</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#planner">Plan a trip</a>
+      <a href="#how">How it works</a>
+      <a href="#assumptions">Our data</a>
+    </nav>
+    <div class="header-actions">
+      <span class="prototype-chip"><span></span> NCR prototype</span>
+      <button type="button" id="hapticToggle" class="haptic-toggle" aria-pressed="true" aria-label="Haptic feedback is on" title="Haptic feedback (vibration on supported phones)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6M8 7v10M12 5v14M16 7v10M20 9v6"/></svg></button>
+      <button type="button" id="themeToggle" class="theme-toggle" aria-label="Switch to dark mode" title="Switch appearance">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 15.4A8.5 8.5 0 0 1 8.6 3.4 8.7 8.7 0 1 0 20.6 15.4Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> Delhi NCR · greener journeys</div>
+        <h1 id="hero-title">Choose your route.<br><span>Change your impact.</span></h1>
+        <p class="hero-lead">One trip. Six ways to get there.</p>
+        <div class="hero-points" aria-label="GreenRoute benefits">
+          <span><i aria-hidden="true">✓</i> Compare carbon</span>
+          <span><i aria-hidden="true">✓</i> See the route</span>
+          <span><i aria-hidden="true">✓</i> No sign-up</span>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="hero-art-orbit"></div>
+          <div class="art-tree art-tree-one"><span></span></div><div class="art-tree art-tree-two"><span></span></div>
+          <div class="art-road"></div>
+          <div class="art-bike"><svg viewBox="0 0 100 55"><circle cx="23" cy="38" r="12"/><circle cx="77" cy="38" r="12"/><path d="m23 38 17-23 18 23H23l13-17h21l20 17M38 15h-9m29 23 10-23h9"/><circle cx="41" cy="9" r="3"/></svg></div>
+          <div class="art-walk"><svg viewBox="0 0 70 65"><circle cx="38" cy="9" r="6"/><path d="m35 18-10 15 12 8 2 20m-2-20-15 18m13-33 15 10 7-10m-7 10-4 15"/></svg></div>
+          <div class="art-transit art-metro"><svg viewBox="0 0 70 56"><rect x="17" y="5" width="36" height="42" rx="8"/><path d="M23 14h24v15H23zM27 36h4m10 0h4M22 47l-5 6m36-6 5 6"/><circle cx="27" cy="35" r="2"/><circle cx="43" cy="35" r="2"/></svg></div>
+          <div class="art-transit art-bus"><svg viewBox="0 0 80 55"><rect x="9" y="8" width="62" height="36" rx="8"/><path d="M16 15h48v14H16zM22 36h4m28 0h4M18 44l-5 7m50-7 5 7"/><circle cx="22" cy="35" r="2"/><circle cx="58" cy="35" r="2"/></svg></div>
+          <div class="art-car"><span></span></div>
+          <div class="art-leaf art-leaf-one">✦</div><div class="art-leaf art-leaf-two">✦</div>
+          <div class="art-smog"></div>
+        </div>
+      </div>
+
+      <form id="planner" class="planner" novalidate>
+        <div class="planner-top">
+          <div><span class="section-kicker">PLAN A TRIP</span><h2>Where to?</h2></div>
+          <span class="planner-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-12A7 7 0 1 0 5 9c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg></span>
+        </div>
+        <div class="place-fields">
+          <div class="field-group"><label for="from">From</label><div class="input-wrap"><span class="field-dot start-dot" aria-hidden="true"></span><input id="from" list="places" autocomplete="off" placeholder="Starting point" required><button type="button" id="locate" class="locate" aria-label="Use my current location" title="Use my location"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></button></div></div>
+          <button type="button" id="swap" class="swap swap-middle" aria-label="Swap start and destination" title="Swap locations"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3 3.5 6.5 7 10M3.5 6.5h13M17 21l3.5-3.5L17 14M20.5 17.5h-13"/></svg></button>
+          <div class="field-group destination-field"><label for="to">To</label><div class="input-wrap"><span class="field-dot end-dot" aria-hidden="true"></span><input id="to" list="places" autocomplete="off" placeholder="Destination" required></div></div>
+        </div>
+        <datalist id="places"></datalist>
+        <div class="mode-select-wrap">
+          <div class="mode-select-heading"><label>Choose a travel mode</label><span>Tap to preview</span></div>
+          <div id="modePicker" class="mode-picker" role="group" aria-label="Preferred travel mode">
+            <button type="button" class="mode-pick green-mode" data-pick-mode="walk" aria-pressed="false"><span class="mode-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l1.5-6-2.5-2.5 1.5-5 3 2.5 3 .5M11.5 15l3 2 .5 4M8.5 9.5l-2 3"/></svg></span><span>Walk</span></button>
+            <button type="button" class="mode-pick green-mode is-selected" data-pick-mode="bike" aria-pressed="true"><span class="mode-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-8h5l3 8M10 8l2 8M9 6h3"/></svg></span><span>Cycle</span></button>
+            <button type="button" class="mode-pick transit-mode" data-pick-mode="metro" aria-pressed="false"><span class="mode-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="12" height="14" rx="3"/><path d="M6 10h12M9 14h.01M15 14h.01M8 21l2-4M16 21l-2-4"/></svg></span><span>Metro</span></button>
+            <button type="button" class="mode-pick transit-mode" data-pick-mode="bus" aria-pressed="false"><span class="mode-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="13" rx="3"/><path d="M4 11h16M8 17v2M16 17v2M7.5 14h.01M16.5 14h.01"/></svg></span><span>Bus</span></button>
+            <button type="button" class="mode-pick car-mode" data-pick-mode="car" aria-pressed="false"><span class="mode-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16v-4l2-5h10l2 5v4M3 16h18M7.5 12h9"/><circle cx="7.5" cy="17.5" r="1.3"/><circle cx="16.5" cy="17.5" r="1.3"/></svg></span><span>Solo car</span></button><button type="button" class="mode-pick car-mode" data-pick-mode="two" aria-pressed="false"><span class="mode-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17h4l3-7h3l2 7M13 10l-2-3H8"/></svg></span><span>2-wheeler</span></button>
+          </div>
+        </div>
+        <div id="modeMood" class="mode-mood" data-mood="bike" aria-live="polite">
+          <div class="mood-visual mood-nature" aria-hidden="true"><svg viewBox="0 0 76 48"><path d="M8 41h60M17 39c-3-8 1-13 9-15 1 8-2 13-9 15Zm11-8c-1-10 4-16 15-18 1 10-5 16-15 18Zm19 6c0-8 5-12 14-12-1 8-6 12-14 12Z"/><path d="M28 31 21 39M43 20 32 39M61 27 48 39"/></svg></div>
+          <div class="mood-visual mood-transit" aria-hidden="true"><svg viewBox="0 0 76 48"><rect x="19" y="4" width="38" height="36" rx="8"/><path d="M24 12h28v13H24zM27 32h4m14 0h4M27 40l-5 5m27-5 5 5"/><circle cx="28" cy="31" r="2"/><circle cx="48" cy="31" r="2"/></svg></div>
+          <div class="mood-visual mood-pollution" aria-hidden="true"><svg viewBox="0 0 76 48"><path d="M8 42h60M17 42V22h12V9h8v33M37 42V27h12v-8h10v23"/><path d="M22 5c-3-3 2-5 0-7M32 5c-3-3 2-5 0-7M49 12c-3-3 2-5 0-7"/><circle cx="57" cy="11" r="4"/><circle cx="62" cy="17" r="3"/></svg></div>
+          <div class="mood-copy"><strong id="moodTitle">Cycle instead of driving</strong><span id="moodText">Zero tailpipe emissions · active mobility</span></div>
+          <span id="moodTag" class="mood-tag">LOW IMPACT</span>
+        </div>
+        <div class="time-row"><span>When?</span><div class="time-pills" role="group" aria-label="Travel time">
+          <button type="button" class="time-pill is-selected" data-time="day" aria-pressed="true">Day</button><button type="button" class="time-pill" data-time="evening" aria-pressed="false">Evening</button><button type="button" class="time-pill" data-time="night" aria-pressed="false">Night</button>
+        </div><select id="travelTime" name="travelTime" class="visually-hidden" aria-label="When are you travelling?"><option value="day">Day</option><option value="evening">Evening</option><option value="night">Night</option></select></div>
+        <div class="spare-row"><label for="spare">Time I can spare vs the fastest <output id="spareOut" for="spare">+30 min</output></label><input id="spare" type="range" min="0" max="60" step="5" value="30"></div>
+        <button class="go" type="submit" id="go">Compare routes <span aria-hidden="true">→</span></button>
+        <div class="examples"><span class="examples-label">OR TRY</span><span id="chips" class="chips"></span></div>
+        <p id="error" class="error" role="alert" hidden></p>
+      </form>
+      <div class="hero-orb orb-one" aria-hidden="true"></div><div class="hero-orb orb-two" aria-hidden="true"></div>
+    </section>
+
+    <section class="results section-shell" id="results">
+      <div class="section-heading results-heading">
+        <div><span class="section-kicker">YOUR JOURNEY</span><h2>See the difference.</h2></div>
+        <p>Tap a mode to update the route.</p>
+      </div>
+            <section id="quickCompare" class="carbon-compare panel" aria-labelledby="compare-title" hidden>
+        <div class="compare-head"><div><span class="panel-overline">THE CARBON GAP</span><h3 id="compare-title">Cycle vs. drive alone</h3></div><span id="compareSaving" class="compare-saving"></span></div>
+        <div class="compare-pair">
+          <article class="compare-option compare-bike"><div class="compare-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l6 6 3-3 7 7M15 17h5v-5"/></svg></div><div class="compare-details"><span class="compare-mode-label" id="greenLabel">CYCLING</span><strong id="bikeCo2">0 kg CO₂e</strong><small><span id="bikeTime">—</span> · <span id="bikeKm">—</span> km</small><div class="impact-track"><i id="bikeBar"></i></div><div class="compare-fact">No tailpipe emissions</div></div><svg class="nature-art" viewBox="0 0 90 72" aria-hidden="true"><path d="M6 66h78M24 65c-10-20 1-31 19-31 3 17-4 28-19 31Zm22-17c-2-21 10-33 31-34 1 21-11 32-31 34Zm2 17c2-11 11-18 24-17-4 12-12 18-24 17Z"/><path d="M24 65 43 43M46 48 61 18M48 65 69 49"/></svg></article>
+          <article class="compare-option compare-car"><div class="compare-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 16v-4l2-5h10l2 5v4M3 16h18M7.5 12h9"/><circle cx="7.5" cy="17.5" r="1.3"/><circle cx="16.5" cy="17.5" r="1.3"/></svg></div><div class="compare-details"><span class="compare-mode-label">SOLO CAR</span><strong id="carCo2">— kg CO₂e</strong><small><span id="carTime">—</span> · <span id="carKm">—</span> km</small><div class="impact-track"><i id="carBar"></i></div><div class="compare-fact">One person · petrol-car estimate</div></div><svg class="pollution-art" viewBox="0 0 90 72" aria-hidden="true"><path d="M7 66h76M15 65V35h18v30M33 65V18h12v47M45 65V42h30v23"/><path d="M36 18V6h7v12"/><path d="M47 10c-5-6 5-7 0-13M59 18c-4-5 5-7 2-12"/><circle cx="57" cy="29" r="7"/><circle cx="69" cy="25" r="5"/><circle cx="76" cy="34" r="4"/></svg></article>
+        </div>
+        <p id="compareFoot" class="compare-foot">Cycling vs solo driving, based on illustrative operational emissions.</p>
+      </section>
+      <div id="status" class="status" role="status" hidden></div>
+      <div class="split">
+        <div class="map-panel panel">
+          <div class="panel-heading"><div><span class="panel-overline">ROUTE EXPLORER</span><h3>Across the city</h3></div><span class="map-live"><span></span> Interactive map</span></div>
+          <div id="map" role="application" aria-label="Route map of Delhi NCR"></div>
+          <div class="map-legend"><span><i class="legend-point start-point"></i> Start</span><span><i class="legend-point end-point"></i> Destination</span><span><i class="legend-line"></i> Selected route</span></div>
+          <p class="map-note">© OpenStreetMap contributors · Routes may use estimates.</p>
+        </div>
+        <div class="side-panel">
+          <div id="empty" class="empty panel"><div class="empty-art" aria-hidden="true"><svg viewBox="0 0 120 90"><path d="M13 69c9-13 15-26 30-27 9 0 11 8 19 8 8 0 10-15 19-20 9-4 15 6 26 0"/><path d="M19 75h83"/><circle cx="38" cy="42" r="4"/><circle cx="83" cy="30" r="4"/><path d="M38 42 83 30" stroke-dasharray="3 5"/></svg></div><span class="empty-kicker">YOUR JOURNEY STARTS HERE</span><h3>Ready when you are.</h3><p>Enter two places, then compare time and emissions.</p><div class="empty-points"><span><i>✓</i> No sign-up</span><span><i>✓</i> Clear comparisons</span></div></div>
+          <div id="summary" hidden>
+            <div id="hero-save" class="save"></div>
+            <div id="stats" class="stats"></div>
+          </div>
+        </div>
+      </div>
+      <section id="journey-insights" class="journey-insights panel" aria-labelledby="insights-title" hidden>
+        <div class="insights-heading"><div><span class="panel-overline">TRAVEL COMFORT</span><h3 id="insights-title">A little more context for your trip</h3><p>Guidance only · not a safety rating.</p></div><span class="advisory-pill"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg> Advisory only</span></div>
+        <div id="comfortItems" class="comfort-grid"></div>
+        <div class="trip-steps-wrap"><div class="trip-steps-heading"><strong>What this journey involves</strong><span id="transferNote">Transit details are illustrative</span></div><div id="tripSteps" class="trip-steps"></div></div>
+        <div class="insights-footer"><p id="safetyContext" class="safety-context"></p><div class="share-actions"><button type="button" class="secondary-button" id="copyTrip"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg> Copy trip summary</button><button type="button" class="share-button" id="shareTrip"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg> Share journey</button></div></div>
+        <p id="shareStatus" class="share-status" role="status" aria-live="polite" hidden></p>
+      </section>
+      <div id="board" hidden>
+        <div class="section-heading board-heading"><div><span class="section-kicker">MAKE THE COMPARISON</span><h2>Every option, side by side.</h2></div><p>Choose a card to show its route on the map. Figures are estimated, not live journey guarantees.</p></div>
+        <div id="cards" class="cards"></div>
+        <div class="bars-panel panel"><div class="panel-heading"><div><span class="panel-overline">AT A GLANCE</span><h3>Time vs. emissions</h3></div><div class="chart-key"><span><i class="key-emissions"></i> CO₂e</span><span><i class="key-time"></i> Travel time</span></div></div><div id="bars" class="bars"></div></div>
+      </div>
+    </section>
+
+    <section class="how section-shell" id="how">
+      <div class="section-heading"><div><span class="section-kicker">FROM A TO B, WITH INTENTION</span><h2>Better choices start with clarity.</h2></div><p>GreenRoute makes the environmental cost of a trip easier to understand — without hiding the time trade-off.</p></div>
+      <div class="steps">
+        <article class="step"><span class="step-number">01</span><div class="step-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6 7-11.5a7 7 0 1 0-14 0C5 15 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></div><h3>Tell us where</h3><p>Pick a start and destination from the Delhi NCR demo locations or search an address online.</p></article>
+        <article class="step"><span class="step-number">02</span><div class="step-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/></svg></div><h3>Explore routes</h3><p>Compare six travel options with mapped paths where routing data is available.</p></article>
+        <article class="step"><span class="step-number">03</span><div class="step-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16a8 8 0 1 1 16 0M12 16l4-5"/><circle cx="12" cy="16" r="1.2"/></svg></div><h3>Understand impact</h3><p>See estimated journey time, distance and operational CO₂-equivalent emissions in one place.</p></article>
+        <article class="step"><span class="step-number">04</span><div class="step-icon" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-14 15-14 0 9-5 15-12 15-1.2 0-2-.4-3-1z"/><path d="M5 19c3-5 6-8 10-10"/></svg></div><h3>Choose your way</h3><p>Find the lowest-emission practical option and compare it with the fastest route.</p></article>
+      </div>
+      <div class="honest"><span class="honest-icon" aria-hidden="true">i</span><p><strong>Transparency matters.</strong> This is an ideathon prototype using rule-based estimates, not a live AI or real-time transit service. Metro, bus, speed and emissions figures are illustrative, and routing may fall back to approximate distances.</p></div>
+    </section>
+
+    <section class="assume section-shell" id="assumptions">
+      <div class="section-heading"><div><span class="section-kicker">SHOW YOUR WORK</span><h2>Know what the numbers mean.</h2></div><p>These rounded values help demonstrate the concept. They are not audited Delhi-specific emissions measurements.</p></div>
+      <div class="table-panel panel"><div class="table-top"><div><h3>Demo calculation assumptions</h3><p>Operational emissions per passenger-kilometre</p></div><span class="demo-label">ILLUSTRATIVE DATA</span></div><div class="tbl-wrap"><table><thead><tr><th>Travel mode</th><th>Emission factor</th><th>Avg. speed</th><th>Assumption</th></tr></thead><tbody id="assump"></tbody></table></div></div>
+      <div class="limits-grid"><div class="limit-item"><span class="limit-icon">01</span><p><strong>Practical distances</strong> Walking is considered practical up to 5 km; cycling up to 15 km.</p></div><div class="limit-item"><span class="limit-icon">02</span><p><strong>Public transport</strong> Metro uses a limited demo station list. Bus is a generic estimate, without routes or live arrivals.</p></div><div class="limit-item"><span class="limit-icon">03</span><p><strong>Fallback behaviour</strong> If public routing services fail, the app uses straight-line distance plus a detour factor and flags that fallback.</p></div></div>
+    </section>
+
+    <section class="road section-shell" id="roadmap">
+      <div class="road-top"><div><span class="section-kicker">THE NEXT MILE</span><h2>From prototype to public good.</h2><p>With validated local data, GreenRoute could evolve into a stronger everyday mobility companion.</p></div><div class="road-stamp" aria-hidden="true"><svg viewBox="0 0 80 80"><path d="M40 7c-5 20-5 46 0 66M7 40c20-5 46-5 66 0M17 17c17 17 29 29 46 46M63 17C46 34 34 46 17 63"/><circle cx="40" cy="40" r="19"/></svg></div></div>
+      <div class="road-grid"><article><span>PHASE 01</span><h3>Real transit networks</h3><p>Replace illustrative metro legs with verified station, line and interchange data.</p></article><article><span>PHASE 02</span><h3>Live public transport</h3><p>Integrate authorized GTFS or transit feeds for more useful bus and metro estimates.</p></article><article><span>PHASE 03</span><h3>Smarter city insights</h3><p>Explore live traffic, air-quality context and independently validated emissions factors.</p></article></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 38 38"><rect x="1" y="1" width="36" height="36" rx="12"/><path d="M27.8 9.4C17.4 9.6 10 15.1 10.2 23.2c.1 3.1 2.4 5.3 5.4 5.3 8.1.1 13.3-8.1 12.2-19.1Z"/><path d="M8.7 29.2c4.2-7.4 8.7-11.4 15.2-15.1"/></svg></span><span class="brand-name">greenroute<span>ncr</span></span></a><p>Built for a greener Delhi NCR. <span>Prototype only · Estimates are not travel advice.</span></p><a class="back-top" href="#top">Back to top ↑</a></footer>
+
+  <div id="mobileBar" class="mobile-bar" hidden><div><small>Greenest realistic pick</small><strong id="mbText">—</strong></div><button type="button" id="mbShare" class="mb-share"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg> Share</button></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="data.js"></script>
+  <script src="engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
